@@ -8,7 +8,6 @@ void prime(int* pipe_fd){
     close(pipe_fd[1]);
 
     int num = 0;
-
     if( size_int != read(pipe_fd[0],&num,size_int) ){
         return ;
     }
@@ -69,12 +68,8 @@ int main(int argc, char *argv[]){
     }
 
     close(pipe_fd[0]);
-    int size = 0;
     for( int num = 2; num <= limiter; ++num){
-        size = write(pipe_fd[1],&num,size_int);
-        if( size != size_int ){
-            fprintf(2, "don't writer int size to pipe, size:%d",size);
-        }
+        write(pipe_fd[1],&num,size_int);
     }
 
     close(pipe_fd[1]);
