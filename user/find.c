@@ -5,8 +5,7 @@
 
 
 void find(char* dir, char* file){
-
-
+    
     char buf[512], *p;
     int fd;
     struct dirent de;
@@ -33,7 +32,7 @@ void find(char* dir, char* file){
     *p++ = '/';
 
     while(read(fd, &de, sizeof(de)) == sizeof(de)){
-        
+
         if(de.inum == 0){
             continue;
         }
