@@ -27,7 +27,6 @@ void prime(int* pipe_fd){
     }
 
     if( 0 == fork_next){
-
         prime(pipe_next);
         exit(0);
     }
