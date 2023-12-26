@@ -39,6 +39,7 @@ void prime(int* pipe_fd){
         }
     }
     close(pipe_next[1]);
+    close(pipe_fd[0]);
     wait(0);
 }
 
