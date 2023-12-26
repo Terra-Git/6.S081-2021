@@ -288,6 +288,7 @@ fork(void)
     return -1;
   }
   np->sz = p->sz;
+  np->mask = p->mask;
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
@@ -653,4 +654,20 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+// lab 2
+uint64 
+get_nproc(void)
+{
+  uint64 n = 0;
+  struct proc *p = proc;
+
+  for(; p < &proc[NPROC]; p++){
+    if( p->state != UNUSED){
+      ++n;
+    }
+  }
+
+  return n;
 }
