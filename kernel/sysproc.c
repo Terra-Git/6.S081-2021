@@ -77,10 +77,49 @@ sys_sleep(void)
 
 
 #ifdef LAB_PGTBL
+int 
+pgaccess(pagetable_t pagetable, uint64 page_start, int page_num, uint64 result){
+
+  if ( page_num < 0 || 64 < page_num )
+    return -1;
+
+  uint64 mask = 0;
+  uint64 begin = page_start;
+  
+  pte_t* pet = 0;
+  for( int index = 0; index < page_num; index++){
+    pet = walk(pagetable, begin, sizeof(begin));
+    if( 0 == pet )
+      return -1;
+    if( *pet & PTE_A ){
+      mask |= (1 << index);
+      *pet &= (~PTE_A);
+    }
+    begin += PGSIZE;
+  }
+  copyout(pagetable, result, (char*)(&mask),sizeof(mask));
+  return 0;
+}
+
 int
 sys_pgaccess(void)
 {
-  // lab pgtbl: your code here.
+  uint64 page_start;
+  if( argaddr(0,&page_start) < 0)
+    return -1;
+  
+  int page_num;
+  if( argint(1,&page_num) < 0)
+    return -1;
+
+  uint64 result;
+  if( argaddr(2,&result) < 0)
+    return -1;
+  
+  struct proc *p = myproc();
+  if( pgaccess(p->pagetable,page_start,page_num,result))
+    return -1;
+
   return 0;
 }
 #endif

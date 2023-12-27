@@ -462,6 +462,6 @@ vmprint_help(pagetable_t pagetable,int level){
 void 
 vmprint(pagetable_t pagetable)
 {
-  printf("page table %p\n",&pagetable);
+  printf("page table %p\n",pagetable);
   vmprint_help(pagetable,1);
 }

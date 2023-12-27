@@ -261,10 +261,6 @@ userinit(void)
   p->cwd = namei("/");
 
   p->state = RUNNABLE;
-
-  // lab3 - Print a page table
-  vmprint(p->pagetable);
-
   release(&p->lock);
 }
 
