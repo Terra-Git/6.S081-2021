@@ -432,3 +432,36 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
     return -1;
   }
 }
+
+// lab3 Print a page table
+void 
+vmprint_help(pagetable_t pagetable,int level){
+  static int PTE_SIZE = 512;
+  for( int index = 0; index < PTE_SIZE; ++index){
+    pte_t pte = pagetable[index];
+    // 可用数据
+    if(pte & PTE_V) {
+      pagetable_t child = (pagetable_t)PTE2PA(pte);
+      switch(level){
+        case 3:
+          printf(".. ");
+        case 2:
+          printf(".. ");
+        case 1:
+          printf("..%d: pte %p pa %p\n",index,pte,child);
+      }
+      // 判断是否最低页，可通过权限判断
+      if( 0 == (pte & ( PTE_R | PTE_W | PTE_X)) ){
+        vmprint_help(child,level + 1);
+      }
+    } 
+  }
+}
+
+// lab3 Print a page table
+void 
+vmprint(pagetable_t pagetable)
+{
+  printf("page table %p\n",&pagetable);
+  vmprint_help(pagetable,1);
+}

@@ -262,6 +262,9 @@ userinit(void)
 
   p->state = RUNNABLE;
 
+  // lab3 - Print a page table
+  vmprint(p->pagetable);
+
   release(&p->lock);
 }
 
