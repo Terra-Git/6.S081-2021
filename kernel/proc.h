@@ -81,6 +81,7 @@ struct trapframe {
 };
 
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
+enum tickstate { TICK_RUN,TICK_STOP};
 
 // Per-process state
 struct proc {
@@ -105,4 +106,11 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  
+
+  int    ticks;
+  enum tickstate tick_state;
+  uint64 tick_count;
+  uint64 handle;
+  struct trapframe *tick_trapframe; // data page for trampoline.S
 };
